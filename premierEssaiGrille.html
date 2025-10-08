@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport"
+            content="width=device-width, initial-scale=1.0">
+      <title>Essai grille</title>
+      <link rel="stylesheet" type="text/css" href="style.css">
+      <style>
+      .container {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        background-color: dodgerblue;
+        padding: 10px;
+      }
+      .container > div {
+        background-color: #f1f1f1;
+        border: 1px solid black;
+        padding: 10px;
+        font-size: 30px;
+        text-align: center;
+      }
+      </style>
+  </head>
+  <body>
+    <h1>We don't wanna be no synth</h1>
+    <div id="control-panel">
+      <button type="button" id="play_button" onClick="play()">&#9658;</button>
+      <button type="button" id="pause_button" onClick="pause()">&#9208;</button>
+      <button type="button" id="stop_button" onClick="stop()">&#9632;</button>
+      <input type="range" id="bpm" name="bpm" min="30" max="120" oninput="this.nextElementSibling.value = this.value;updateTempo();">
+      <output>75</output>
+      <select name="beat" id="beat" onchange="updateTempo()">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="4">4</option>
+        <option value="8">8</option>
+    </select><input type="range" id="volume" name="volume" min="0" max="100" oninput="this.nextElementSibling.value = this.value;updateVolume();">
+      <output>50</output>
+    </div>
+
+    <canvas id="myCanvas" width="1230" height="710">
+      Your browser does not support the HTML canvas tag.
+    </canvas>
+
+    <div id="effectControlZone">
+      //TODO
+    </div>
+    <canvas id="oscilloscope" width="1230" height="710" style="border:1px solid black;">
+      Your browser does not support the HTML canvas tag.
+    </canvas>
+    <script src="inst.js"></script>
+    <script src="data.js"></script>
+    <script src="canvas.js"></script>
+    <script src="sound.js"></script>
+  </body>
+</html>

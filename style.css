@@ -1,0 +1,15 @@
+
+#control-panel{
+  margin-left:1rem;
+  margin-bottom:1rem;
+  border : 1px black solid;
+}
+
+#control-panel>button{
+  height:3rem;
+  width:3rem;
+  font-size: 2em;
+  background-color: dimgray;
+  color:beige;
+  border-style: none;
+}

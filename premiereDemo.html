@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>AudioContext</title>
+</head>
+
+<body>
+    <button onclick="playSound()">Play Sound</button>
+
+    <script>
+        function playSound() {
+            // Create an AudioContext object
+            const audioContext = new AudioContext();
+
+            // Create an oscillator node
+            const oscillator = audioContext.createOscillator();
+
+            // Connect the oscillator to the audio output (speakers)
+            oscillator.connect(audioContext.destination);
+
+            // Set the frequency of the oscillator (440 Hz = A4 note)
+            oscillator.frequency.setValueAtTime(240, audioContext.currentTime);
+
+            // Start the oscillator
+            oscillator.start();
+            setTimeout(() => {
+            oscillator.frequency.setValueAtTime(150, audioContext.currentTime);
+            }, 1000);
+            // Stop the oscillator after 2 seconds
+            setTimeout(() => {
+                oscillator.stop();
+            }, 2000);
+        }
+    </script>
+</body>
+
+</html>
