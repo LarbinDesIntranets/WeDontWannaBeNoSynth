@@ -68,6 +68,7 @@ class Synth extends Instrument{
 
     //config form
     var f = document.createElement("form");
+    f.innerHTML="";
     //muted
     var i = document.createElement("input"); //input element, text
     i.setAttribute('type',"checkbox");

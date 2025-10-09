@@ -1,18 +1,27 @@
-  /**
-   * Global variables
-   */
-  var isPlaying=false;
-  var tempo=75;
-  var beat=1;
-  var volume=1;
-  var currentMeseare=0;
-  var intervalLecture;
-  var isMetronomeActivated=true;
-
-  var currentInstrument={};
-  currentInstrument = new Synth();
-
-  const cellWidth = 50;
+/**
+ * Global variables
+ */
+var isPlaying=false;
+var tempo=75;
+var beat=1;
+var volume=1;
+var currentMeseare=0;
+var intervalLecture;
+var isMetronomeActivated=true;
+var instruments=[];
+var currentInstrument={};
+currentInstrument = new Synth();
+instruments.push(currentInstrument);
+instruments.push(new Synth());
+var choixInstrument = document.getElementById("choixInstrument");
+choixInstrument.innerHTML="";
+for(let i=0;i<instruments.length;i++){
+  var option = document.createElement("option");
+  option.setAttribute("value",i);
+  option.innerText=instruments[i].constructor.name;
+  choixInstrument.appendChild(option);
+}
+const cellWidth = 50;
 const cellHeigth = 20
 var canvas = document.getElementById("myCanvas");
 var width = canvas.width;
@@ -30,6 +39,6 @@ const oscilloscope = document.getElementById("oscilloscope");
 var oscilloscope_ctx = oscilloscope.getContext("2d");
 
 var analyser = new AnalyserNode(
-    ac,{smoothingTimeConstant:1,fftSize:2048}
-  );
-  var dataArray=new Uint8Array(analyser.frequencyBinCount);
+  ac,{smoothingTimeConstant:1,fftSize:2048}
+);
+var dataArray=new Uint8Array(analyser.frequencyBinCount);

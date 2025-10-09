@@ -39,7 +39,11 @@
     </select><input type="range" id="volume" name="volume" min="0" max="100" oninput="this.nextElementSibling.value = this.value;updateVolume();">
       <output>50</output>
     </div>
-
+    <div>
+      <select name="choixInstrument" id="choixInstrument" onchange="changeInstrument()">
+        <option value="defaultSynth">defaultSynth</option>
+      </select>
+    </div>
     <canvas id="myCanvas" width="1230" height="710">
       Your browser does not support the HTML canvas tag.
     </canvas>

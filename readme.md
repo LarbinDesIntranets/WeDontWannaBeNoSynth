@@ -9,10 +9,12 @@ A la base je voulais faire un petit sequencer pour faire une boite à rythme ...
 2. style.css
     - Rien de bien méchant pour le moment
 3. data.js
-    - Définition de quelques variables globales
+    - Définition de quelques variables globales et à mettre en place du comportement. La plupart du code sera sans doute déplacé au fur et à mesure autre part à force de généraliser/refactorer.
 4. canvas.js
     - Fonctions liées aux manipulations du canvas/visuel
 5. sound.js
     - Fonctions liées au son
 6. inst.js
     - encapsulation de la génération de son, stockage de variable pour dynamiser les générations et multiplier les inputs
+
+Pour le moment l'oscilloscope n'est pas utilisé par l'output des oscillateurs de l'instrument. Mais le code fonctionne :-p

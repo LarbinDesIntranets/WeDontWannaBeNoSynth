@@ -14,6 +14,13 @@ function drawCanvas(){
   }
   //ctx.fillRect(100,50, 50,50);
   ctx.stroke();
+  //Coloriage
+  for(let i=0;i<currentInstrument.sequence.length;i++){
+    currentInstrument.sequence[i].forEach(element => {
+      console.log(element + " "+i);
+      activateCell(element,i);
+    });
+  }
 }
 drawCanvas();
 setupOscillator();
@@ -100,6 +107,10 @@ function getCursorPosition(canvas, event) {
   }
   console.log(piste);
 }
+function activateCell(x,y){
+  ctx.fillStyle = "dodgerblue";
+  ctx.fillRect((x*cellWidth)+1,(y*cellHeigth)+1, cellWidth-2,cellHeigth-2);
+}
 canvas.addEventListener('mousedown', function(e) {
     getCursorPosition(canvas, e)
 });
@@ -126,3 +137,17 @@ const drawOscilloscope = () => {
 	requestAnimationFrame(drawOscilloscope);
 };
 drawOscilloscope();
+function changeInstrument(){
+  //get new instrument
+  var choix = document.getElementById("choixInstrument").value;
+  currentInstrument = instruments[choix];
+  //cleanRect
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //drawCanvas
+  drawCanvas();
+  //??µ
+  defaultLength=currentInstrument.getSampleLength();
+  piste = currentInstrument.sequence;
+  height=piste.length*cellHeigth;
+  currentInstrument.generatePanel(document.getElementById("effectControlZone"));
+}
