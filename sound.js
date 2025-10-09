@@ -60,13 +60,10 @@ function loop(){
     }
   }
     //frequency=[130.81,138.59,146.83,155.56,164.81,174.61,185,196,207.65,220,233.08,246.96];
-    currentInstrument.loop(currentMeseare);
-    /*for(let i =0;i<piste.length;i++){
-      if(piste[i].has(currentMeseare%defaultLength)){
-        console.log("oscillate !");
-        oscillate(frequency[i]);
-      }
-    }*/
+    instruments.forEach(i => {
+      i.loop(currentMeseare);
+    });
+    //currentInstrument.loop(currentMeseare);
 
     //Do the rest of the playabbledelidou
   currentMeseare++;

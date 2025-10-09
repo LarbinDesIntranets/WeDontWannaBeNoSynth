@@ -101,11 +101,8 @@ function getCursorPosition(canvas, event) {
       piste[iPiste].add(timing);
       ctx.fillStyle = "dodgerblue";
       ctx.fillRect((timing*cellWidth)+1,(iPiste*cellHeigth)+1, cellWidth-2,cellHeigth-2);
-      //test();
     }
-    //piste[iPiste].sort(function(a, b){return a-b});
   }
-  console.log(piste);
 }
 function activateCell(x,y){
   ctx.fillStyle = "dodgerblue";
