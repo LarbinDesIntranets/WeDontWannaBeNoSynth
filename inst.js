@@ -43,7 +43,7 @@ class Synth extends Instrument{
     if(!this.muted){
       for(let i =0;i<this.frequency.length;i++){
         if(this.sequence[i].has(currentMeasure%this.length)){
-          console.log("oscillate !");
+          //console.log("oscillate !");
           this.oscillate(this.frequency[i]);
         }
       }
@@ -72,7 +72,16 @@ class Synth extends Instrument{
     //muted
     var i = document.createElement("input"); //input element, text
     i.setAttribute('type',"checkbox");
-    i.setAttribute('name',"username");
+    i.setAttribute("id","instrumentMute");
+    i.setAttribute('name',"mute");
+    if(this.muted){
+      i.setAttribute('checked',"true");
+    }
+    i.onchange = function(){
+      currentInstrument.muted=document.getElementById("instrumentMute").checked;
+      console.log(document.getElementById("instrumentMute").checked);
+      console.log(currentInstrument.muted);
+    }
     f.appendChild(i);
     f.appendChild(document.createElement("br"));
     //length
@@ -81,6 +90,7 @@ class Synth extends Instrument{
     i.setAttribute('name',"username");
     i.setAttribute('min',"0");
     i.setAttribute('max',"16");
+    i.value=this.length;
     f.appendChild(i);
     f.appendChild(document.createElement("br"));
     //freq type => select
@@ -97,7 +107,7 @@ class Synth extends Instrument{
       console.log(document.getElementById("waveType").value);
       console.log(currentInstrument.type);
     }
-
+    i.value=this.type;
     //i.setAttribute('type',"text");
     //i.setAttribute('name',"username");
     f.appendChild(i);
@@ -116,8 +126,9 @@ class Synth extends Instrument{
     f.appendChild(document.createElement("br"));
     //number of line
     i = document.createElement("input"); //input element, text
-    i.setAttribute('type',"text");
-    i.setAttribute('name',"username");
+    i.setAttribute('type',"number");
+    i.setAttribute('name',"pistes");
+    i.value=this.getPisteLength();
     f.appendChild(i);
     f.appendChild(document.createElement("br"));
 

@@ -47,7 +47,7 @@ function getTimeInterval(){
   return (60000/tempo)/beat;
 }
 function loop(){
-  console.log('loop ' + currentMeseare);
+  //console.log('loop ' + currentMeseare);
   updateCanvas();
   if(!isMetronomeActivated){
     if(currentMeseare%beat==0){
