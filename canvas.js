@@ -1,15 +1,17 @@
 function drawCanvas(){
-  canvas.height=height;
+  canvas.height=currentInstrument.getPisteLength()*cellHeigth;
+  canvas.width=currentInstrument.getSampleLength()*cellWidth;
+
   var x=0;
-  while(x<=defaultLength*cellWidth){
+  while(x<=currentInstrument.getSampleLength()*cellWidth){
     ctx.moveTo(x,0);
-    ctx.lineTo(x,height);
+    ctx.lineTo(x,canvas.height);
     x+=cellWidth;
   }
   var y=0;
-  while(y<=height && cellWidth*piste.length>=y){
+  while(y<=canvas.height && canvas.width>=y){
     ctx.moveTo(0,y);
-    ctx.lineTo(defaultLength*cellWidth,y);
+    ctx.lineTo(canvas.width,y);
     y+=cellHeigth;
   }
   //ctx.fillRect(100,50, 50,50);
@@ -26,9 +28,9 @@ drawCanvas();
 setupOscillator();
 function cleanCurrentMeasure(currentMeasure){
   //draw activated column
-  drawColumn(currentMeseare%defaultLength==0?defaultLength-1:currentMeseare%defaultLength-1,"white","black","dodgerblue");
+  drawColumn(currentMeseare%currentInstrument.getSampleLength()==0?currentInstrument.getSampleLength()-1:currentMeseare%currentInstrument.getSampleLength()-1,"white","black","dodgerblue");
 
-  //drawColumn(currentMeasure%defaultLength,"green","black","dodgerblue");
+  //drawColumn(currentMeasure%currentInstrument.getSampleLength(),"green","black","dodgerblue");
 }
 function setupOscillator(){
   oscilloscope.width=window.innerWidth/2;
@@ -54,9 +56,9 @@ function setupOscillator(){
 }
 function updateCanvas(){
   //reset previous activated column
-  drawColumn(currentMeseare%defaultLength==0?defaultLength-1:currentMeseare%defaultLength-1,"white","black","dodgerblue");
+  drawColumn(currentMeseare%currentInstrument.getSampleLength()==0?currentInstrument.getSampleLength()-1:currentMeseare%currentInstrument.getSampleLength()-1,"white","black","dodgerblue");
   //draw activated column
-  drawColumn(currentMeseare%defaultLength,"cadetblue","black","yellow");
+  drawColumn(currentMeseare%currentInstrument.getSampleLength(),"cadetblue","black","yellow");
 }
 function drawColumn(iColumn, backColor, borderColor, activatedColor){
   //color back
@@ -97,7 +99,7 @@ function getCursorPosition(canvas, event) {
       piste[iPiste].delete(timing);
       ctx.fillStyle = "white";
       ctx.fillRect((timing*cellWidth)+1,(iPiste*cellHeigth)+1, cellWidth-2,cellHeigth-2);
-    }else if(timing < defaultLength){
+    }else if(timing < currentInstrument.getSampleLength()){
       piste[iPiste].add(timing);
       ctx.fillStyle = "dodgerblue";
       ctx.fillRect((timing*cellWidth)+1,(iPiste*cellHeigth)+1, cellWidth-2,cellHeigth-2);
@@ -138,13 +140,16 @@ function changeInstrument(){
   //get new instrument
   var choix = document.getElementById("choixInstrument").value;
   currentInstrument = instruments[choix];
-  //cleanRect
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  //drawCanvas
-  drawCanvas();
+  redrawSequencer();
   //??µ
   defaultLength=currentInstrument.getSampleLength();
   piste = currentInstrument.sequence;
   height=piste.length*cellHeigth;
   currentInstrument.generatePanel(document.getElementById("effectControlZone"));
+}
+function redrawSequencer(){
+  //cleanRect
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //drawCanvas
+  drawCanvas();
 }

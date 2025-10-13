@@ -87,10 +87,25 @@ class Synth extends Instrument{
     //length
     i = document.createElement("input"); //input element, text
     i.setAttribute('type',"number");
-    i.setAttribute('name',"username");
+    i.setAttribute('name',"instLength");
+    i.setAttribute("id","instrumentLength");
     i.setAttribute('min',"0");
-    i.setAttribute('max',"16");
+    i.setAttribute('max',"24");
     i.value=this.length;
+    i.onchange = function(){
+      let previous = currentInstrument.length;
+      currentInstrument.length=document.getElementById("instrumentLength").value;
+      console.log(document.getElementById("instrumentLength").value);
+      console.log(currentInstrument.length);
+      while(previous>=currentInstrument.length){
+        currentInstrument.sequence.forEach(line => {
+          line.delete(previous);
+        });
+        console.log(previous+" "+currentInstrument.length);
+        previous--;
+      }
+      redrawSequencer();
+    }
     f.appendChild(i);
     f.appendChild(document.createElement("br"));
     //freq type => select
