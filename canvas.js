@@ -1,7 +1,7 @@
 function drawCanvas(){
   canvas.height=currentInstrument.getPisteLength()*cellHeigth;
   canvas.width=currentInstrument.getSampleLength()*cellWidth;
-
+  console.log("=>"+canvas.height+" "+canvas.width);
   var x=0;
   while(x<=currentInstrument.getSampleLength()*cellWidth){
     ctx.moveTo(x,0);
@@ -9,7 +9,7 @@ function drawCanvas(){
     x+=cellWidth;
   }
   var y=0;
-  while(y<=canvas.height && canvas.width>=y){
+  while(y<=canvas.height){
     ctx.moveTo(0,y);
     ctx.lineTo(canvas.width,y);
     y+=cellHeigth;
@@ -56,9 +56,9 @@ function setupOscillator(){
 }
 function updateCanvas(){
   //reset previous activated column
-  drawColumn(currentMeseare%currentInstrument.getSampleLength()==0?currentInstrument.getSampleLength()-1:currentMeseare%currentInstrument.getSampleLength()-1,"white","black","dodgerblue");
+  drawColumn(currentMeseare%currentInstrument.getSampleLength()==0?currentInstrument.getSampleLength()-1:currentMeseare%currentInstrument.getSampleLength()-1,"#F9E6CF","black","#DA498D");
   //draw activated column
-  drawColumn(currentMeseare%currentInstrument.getSampleLength(),"cadetblue","black","yellow");
+  drawColumn(currentMeseare%currentInstrument.getSampleLength(),"#FAC67A","black","#69247C");
 }
 function drawColumn(iColumn, backColor, borderColor, activatedColor){
   //color back
@@ -97,11 +97,11 @@ function getCursorPosition(canvas, event) {
     var timing = Math.floor(x/cellWidth);
     if(piste[iPiste].has(timing)){
       piste[iPiste].delete(timing);
-      ctx.fillStyle = "white";
+      ctx.fillStyle = '#F9E6CF';
       ctx.fillRect((timing*cellWidth)+1,(iPiste*cellHeigth)+1, cellWidth-2,cellHeigth-2);
     }else if(timing < currentInstrument.getSampleLength()){
       piste[iPiste].add(timing);
-      ctx.fillStyle = "dodgerblue";
+      ctx.fillStyle = "#DA498D";
       ctx.fillRect((timing*cellWidth)+1,(iPiste*cellHeigth)+1, cellWidth-2,cellHeigth-2);
     }
   }
