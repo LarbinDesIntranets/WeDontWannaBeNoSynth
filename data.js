@@ -10,9 +10,16 @@ var intervalLecture;
 var isMetronomeActivated=true;
 var instruments=[];
 var currentInstrument={};
-currentInstrument = new Synth();
-instruments.push(currentInstrument);
-instruments.push(new Synth());
+
+instruments=load();
+if(instruments.length!=0){
+  currentInstrument=instruments[0];
+}else{
+  currentInstrument = new Synth();
+  instruments.push(currentInstrument);
+  instruments.push(new Synth());
+}
+
 var choixInstrument = document.getElementById("choixInstrument");
 choixInstrument.innerHTML="";
 for(let i=0;i<instruments.length;i++){
@@ -42,3 +49,11 @@ var analyser = new AnalyserNode(
   ac,{smoothingTimeConstant:1,fftSize:2048}
 );
 var dataArray=new Uint8Array(analyser.frequencyBinCount);
+
+
+function save(){
+
+}
+function load(){
+  return [];
+  }
