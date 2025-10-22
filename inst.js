@@ -1,4 +1,3 @@
-
 const SequenceModification = Object.freeze({ADDED:0,REMOVED:1,NONE:2});
 const NoteFrequencies= [
   A0=>1235.45,
