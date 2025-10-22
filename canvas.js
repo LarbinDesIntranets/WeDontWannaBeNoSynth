@@ -20,10 +20,9 @@ function drawCanvas(){
   ctx.stroke();
   //Coloriage
   for(let i=0;i<currentInstrument.sequence.length;i++){
-    currentInstrument.sequence[i].forEach(element => {
-      console.log(element + " "+i);
-      activateCell(element,i);
-    });
+    if(currentInstrument.sequence[i].length>0){
+      cUpdateLine(i);
+    }
   }
 }
 drawCanvas();
@@ -124,6 +123,7 @@ function cUpdateLine(iPiste){
   while(x<=currentInstrument.getSampleLength()*cellWidth){
     ctx.moveTo(x,iPiste*cellHeigth);
     ctx.lineTo(x,(iPiste+1)*cellHeigth);
+    //console.log("Line to : "+x+' '+(iPiste*cellHeigth)+' '+((iPiste+1)*cellHeigth));
     x+=cellWidth;
   }
   ctx.stroke();
@@ -142,9 +142,9 @@ function activateCell(x,y){
 canvas.addEventListener('mousedown', function(e) {
     getCursorPosition(canvas, e)
 });
-canvas.addEventListener('onclick', function(e) {
+/*canvas.addEventListener('onclick', function(e) {
     getCursorPosition(canvas, e)
-})
+})*/
 
 const drawOscilloscope = () => {
 	analyser.getByteTimeDomainData(dataArray);
