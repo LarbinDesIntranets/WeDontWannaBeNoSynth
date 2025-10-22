@@ -5,6 +5,7 @@ function drawCanvas(){
   canvas.width=currentInstrument.getSampleLength()*cellWidth;
   console.log("=>"+canvas.height+" "+canvas.width);
   var x=0;
+  ctx.beginPath();
   while(x<=currentInstrument.getSampleLength()*cellWidth){
     ctx.moveTo(x,0);
     ctx.lineTo(x,canvas.height);
@@ -74,6 +75,7 @@ function drawColumn(iColumn, backColor, borderColor, activatedColor){
     }
   }
   //vertical lines
+  ctx.beginPath();
   ctx.moveTo(iColumn*cellWidth,0);
   ctx.lineTo(iColumn*cellWidth,cellHeigth*piste.length);
   ctx.moveTo(iColumn*cellWidth+cellWidth,0);
@@ -120,6 +122,7 @@ function cUpdateLine(iPiste){
   ctx.fillRect(1,(iPiste*cellHeigth)+1, (currentInstrument.getSampleLength()*cellWidth)-2,cellHeigth-2);
   //draw vertical lines
   var x=0;
+  ctx.beginPath();
   while(x<=currentInstrument.getSampleLength()*cellWidth){
     ctx.moveTo(x,iPiste*cellHeigth);
     ctx.lineTo(x,(iPiste+1)*cellHeigth);
