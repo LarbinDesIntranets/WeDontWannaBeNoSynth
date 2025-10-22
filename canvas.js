@@ -1,3 +1,5 @@
+const Clic = Object.freeze({RIGHT:1,LEFT:2});
+
 function drawCanvas(){
   canvas.height=currentInstrument.getPisteLength()*cellHeigth;
   canvas.width=currentInstrument.getSampleLength()*cellWidth;
@@ -87,15 +89,21 @@ function drawColumn(iColumn, backColor, borderColor, activatedColor){
   ctx.stroke();
 }
 function getCursorPosition(canvas, event) {
+  console.log(event);
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
+  var bouton = event.buttons; //1=>gauche ; 2=> droit
   //console.log("x: " + x + " y: " + y);
   var iPiste =Math.floor(y/cellHeigth);
   //console.log(iPiste);
   if(iPiste<piste.length){
     var timing = Math.floor(x/cellWidth);
-    if(piste[iPiste].has(timing)){
+    if(SequenceModification.NONE!=currentInstrument.sequenceToggle(iPiste,timing,Math.floor(Math.random()*2)+1)){
+      cUpdateLine(iPiste);
+    }
+    //drawCanvas();
+    /*if(piste[iPiste].has(timing)){
       piste[iPiste].delete(timing);
       ctx.fillStyle = '#F9E6CF';
       ctx.fillRect((timing*cellWidth)+1,(iPiste*cellHeigth)+1, cellWidth-2,cellHeigth-2);
@@ -103,8 +111,29 @@ function getCursorPosition(canvas, event) {
       piste[iPiste].add(timing);
       ctx.fillStyle = "#DA498D";
       ctx.fillRect((timing*cellWidth)+1,(iPiste*cellHeigth)+1, cellWidth-2,cellHeigth-2);
-    }
+    }*/
   }
+}
+function cUpdateLine(iPiste){
+  console.log("drawing?");
+  //fill background color
+  ctx.fillStyle = '#F9E6CF';
+  ctx.fillRect(1,(iPiste*cellHeigth)+1, (currentInstrument.getSampleLength()*cellWidth)-2,cellHeigth-2);
+  //draw vertical lines
+  var x=0;
+  while(x<=currentInstrument.getSampleLength()*cellWidth){
+    ctx.moveTo(x,iPiste*cellHeigth);
+    ctx.lineTo(x,(iPiste+1)*cellHeigth);
+    x+=cellWidth;
+  }
+  ctx.stroke();
+  //draw activated zone
+  ctx.fillStyle = "dodgerblue";
+  for(let i=0;i<currentInstrument.sequence[iPiste].length;i++){
+    let note = currentInstrument.sequence[iPiste][i];
+    ctx.fillRect((note[0]*cellWidth)+1,(iPiste*cellHeigth)+1, (note[1]*cellWidth)-2,cellHeigth-2);
+  }
+  console.log("drawed");
 }
 function activateCell(x,y){
   ctx.fillStyle = "dodgerblue";
