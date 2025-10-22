@@ -1,10 +1,13 @@
 
 const SequenceModification = Object.freeze({ADDED:0,REMOVED:1,NONE:2});
+const NoteFrequencies= [
+  A0=>1235.45,
+];
 class Instrument{
   constructor(){
     this.muted=false;
   }
-  sequenceToggle(iSequence,time){}
+  sequenceToggle(iSequence,start,time){}
   loop(currentMeasure){}
   oscillate(frequency){}
   getPisteLength(){}
@@ -19,7 +22,7 @@ class Synth extends Instrument{
     this.sequence = new Array(this.frequency.length);
     this.type="sine";
     for(let i=0;i<this.sequence.length;i++){
-      this.sequence[i]=new Set();
+      this.sequence[i]=new Array();
     }
   }
   getPisteLength(){
@@ -28,41 +31,75 @@ class Synth extends Instrument{
   getSampleLength(){
     return this.length;
   }
-  sequenceToggle(iSequence,time){
-    if(this.sequence[iSequence].has(time)){
-      this.sequence[iSequence].delete(time);
-      return SequenceModification.REMOVED;
-    }else if(time < this.length){
-      sequence[iSequence].add(time);
-      return SequenceModification.ADDED;
+  sequenceToggle(iSequence,start, time){
+    if(start >= this.length){
+      console.log("this.length trop petit " + start+" "+this.length);
+      return SequenceModification.NONE;
     }
-    return SequenceModification.NONE;
+
+    let sequence = this.sequence[iSequence];
+    for(let i=0;i<sequence.length;i++){
+      console.log("check : "+sequence[i][0]+" "+sequence[i][1]+" "+start+" "+time);
+      //if remove, return
+      if((sequence[i][0]<=start && sequence[i][0]+sequence[i][1]>start)){
+        console.log("delete");
+        this.sequence[iSequence] = this.sequence[iSequence].filter(item => item !== sequence[i]) ;
+        return SequenceModification.REMOVED;
+      }else if((!(sequence[i][0]<start && sequence[i][0]+sequence[i][1]<=start))
+        && (!(sequence[i][0]>=(start+time) && sequence[i][0]+sequence[i][1]>(start+time)))){
+          //Do not fit
+          return SequenceModification.NONE;
+      }
+    }
+    //add
+      console.log("add");
+    this.sequence[iSequence].push(new Array(start,time));
+    //On remet dans l'ordre
+    this.sequence[iSequence].sort(function(a,b){return b[0]-a[0]})
+    return SequenceModification.ADDED;
   }
 
   loop(currentMeasure){
     if(!this.muted){
       for(let i =0;i<this.frequency.length;i++){
-        if(this.sequence[i].has(currentMeasure%this.length)){
+        let timeToSend = this.shouldStart(this.sequence[i],currentMeasure%this.length);
+        if(null!=timeToSend){
           //console.log("oscillate !");
-          this.oscillate(this.frequency[i]);
+          this.oscillate(this.frequency[i],timeToSend[0],timeToSend[1]);
         }
       }
     }
   }
-
-  oscillate(frequency){
-    var audioContext = new AudioContext();
-    const kickOscillator = audioContext.createOscillator();
+  shouldStart(times,tempo){
+    for(let i=0;i<times.length && times[i][0]<=tempo;i++){
+      let time = times[i];
+      if(time[0]==tempo){
+        return time;
+      }
+    }
+    return null;
+  }
+  oscillate(frequency,start,stop){
+    //var audioContext = new AudioContext();
+    const kickOscillator = ac.createOscillator();
     kickOscillator.type = this.type; // Sine wave for a low-frequency sound
     console.log(this.type);
-    kickOscillator.frequency.setValueAtTime(frequency, audioContext.currentTime); // Starting frequency
+    kickOscillator.frequency.setValueAtTime(frequency, ac.currentTime); // Starting frequency
     // For the kick drum
-    const kickGain = audioContext.createGain();
+    const kickGain = ac.createGain();
     kickGain.gain.value = volume; // Start at full volume
-    kickGain.gain.linearRampToValueAtTime(0.001, audioContext.currentTime + (getTimeInterval()/1000)); // Decay over 0.5 seconds
-    kickOscillator.connect(kickGain).connect(audioContext.destination);
-    kickOscillator.start(audioContext.currentTime);
-    kickOscillator.stop(audioContext.currentTime + (getTimeInterval()/1000)); // Stop after the decay
+    kickGain.gain.linearRampToValueAtTime(0.001, ac.currentTime + (getTimeInterval()/1000)); // Decay over 0.5 seconds
+
+    var filtre = ac.createBiquadFilter();
+    filtre.type='lowshelf';
+    filtre.frequency.value=300;
+    filtre.gain.value=100;
+
+    kickOscillator.connect(filtre).connect(kickGain).connect(ac.destination);
+    kickOscillator.start(ac.currentTime);
+    //kickOscillator.stop(audioContext.currentTime + (getTimeInterval()/1000)); // Stop after the decay
+    console.log("stop at "+ac.currentTime +" "+(ac.currentTime + ((getTimeInterval()/1000)*stop)) + " "+getTimeInterval());
+    kickOscillator.stop((ac.currentTime) + ((getTimeInterval()/1000)*stop));
   }
   generatePanel(root){
 
@@ -95,13 +132,13 @@ class Synth extends Instrument{
     i.onchange = function(){
       let previous = currentInstrument.length;
       currentInstrument.length=document.getElementById("instrumentLength").value;
-      console.log(document.getElementById("instrumentLength").value);
-      console.log(currentInstrument.length);
+      //console.log(document.getElementById("instrumentLength").value);
+      //console.log(currentInstrument.length);
       while(previous>=currentInstrument.length){
         currentInstrument.sequence.forEach(line => {
-          line.delete(previous);
+          //TODO : A refaire, ne fonctionne pas en foreach je pense
         });
-        console.log(previous+" "+currentInstrument.length);
+        //console.log(previous+" "+currentInstrument.length);
         previous--;
       }
       redrawSequencer();
