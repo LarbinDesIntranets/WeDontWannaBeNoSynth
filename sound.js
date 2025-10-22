@@ -48,7 +48,7 @@ function getTimeInterval(){
 }
 function loop(){
   //console.log('loop ' + currentMeseare);
-  updateCanvas();
+  //updateCanvas();
   if(!isMetronomeActivated){
     if(currentMeseare%beat==0){
       //play big metronome sound
