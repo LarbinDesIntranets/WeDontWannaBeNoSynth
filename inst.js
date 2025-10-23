@@ -54,10 +54,9 @@ class Synth extends Instrument{
       console.log("add");
     this.sequence[iSequence].push(new Array(start,time));
     //On remet dans l'ordre
-    this.sequence[iSequence].sort(function(a,b){return b[0]-a[0]})
+    this.sequence[iSequence].sort(function(a,b){return a[0]-b[0]})
     return SequenceModification.ADDED;
   }
-
   loop(currentMeasure){
     if(!this.muted){
       for(let i =0;i<this.frequency.length;i++){
@@ -87,14 +86,9 @@ class Synth extends Instrument{
     // For the kick drum
     const kickGain = ac.createGain();
     kickGain.gain.value = volume; // Start at full volume
-    kickGain.gain.linearRampToValueAtTime(0.001, ac.currentTime + (getTimeInterval()/1000)); // Decay over 0.5 seconds
+    kickGain.gain.linearRampToValueAtTime(0.001, ac.currentTime + (getTimeInterval()/1000)*stop); // Decay over 0.5 seconds
 
-    var filtre = ac.createBiquadFilter();
-    filtre.type='lowshelf';
-    filtre.frequency.value=300;
-    filtre.gain.value=100;
-
-    kickOscillator.connect(filtre).connect(kickGain).connect(ac.destination);
+    kickOscillator.connect(kickGain).connect(ac.destination);
     kickOscillator.start(ac.currentTime);
     //kickOscillator.stop(audioContext.currentTime + (getTimeInterval()/1000)); // Stop after the decay
     console.log("stop at "+ac.currentTime +" "+(ac.currentTime + ((getTimeInterval()/1000)*stop)) + " "+getTimeInterval());
