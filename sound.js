@@ -5,21 +5,26 @@ function play(){
   //console.log(isPlaying);
   isPlaying=true;
   intervalLecture=setInterval(loop,getTimeInterval());//time in milliseconds
-
-  //console.log("play");
+  intervalArrow=setInterval(cMoveArrow,getTimeInterval());//30fps ?
+  //fuck this shit
+  let tmpsLine = (60/tempo)/beat;
+  arrowDelta=timeArrow.width/currentInstrument.getSampleLength();
 }
 function pause(){
   //console.log(isPlaying);
   isPlaying=false;
   clearInterval(intervalLecture);
+  clearInterval(intervalArrow);
   //console.log("pause");
 }
 function stop(){
   //console.log(isPlaying);
   isPlaying=false;
-  cleanCurrentMeasure(currentMeseare);
+  //cleanCurrentMeasure(currentMeseare);
   currentMeseare=0;
+  arrowPos=0;
   clearInterval(intervalLecture);
+  clearInterval(intervalArrow);
   //console.log("stop");
 }
 function updateVolume(){
@@ -49,7 +54,7 @@ function getTimeInterval(){
 function loop(){
   //console.log('loop ' + currentMeseare);
   //updateCanvas();
-  if(!isMetronomeActivated){
+  if(isMetronomeActivated){
     if(currentMeseare%beat==0){
       //play big metronome sound
       test();

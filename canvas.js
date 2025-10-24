@@ -3,6 +3,15 @@ const Clic = Object.freeze({RIGHT:1,LEFT:2});
 function drawCanvas(){
   canvas.height=currentInstrument.getPisteLength()*cellHeigth;
   canvas.width=currentInstrument.getSampleLength()*cellWidth;
+  timeArrow.height=canvas.height;
+  timeArrow.width=canvas.width;
+
+  arrow_ctx.beginPath();
+  arrow_ctx.moveTo(0,0);
+  arrow_ctx.strokeStyle="purple";
+  arrow_ctx.lineWidth =3;
+  arrow_ctx.lineTo(0,timeArrow.height);
+  arrow_ctx.stroke();
   console.log("=>"+canvas.height+" "+canvas.width);
   var x=0;
   ctx.beginPath();
@@ -178,6 +187,17 @@ function changeInstrument(){
   piste = currentInstrument.sequence;
   height=piste.length*cellHeigth;
   currentInstrument.generatePanel(document.getElementById("effectControlZone"));
+}
+function cMoveArrow(){
+  arrow_ctx.clearRect(0, 0, timeArrow.width, timeArrow.height);
+  arrow_ctx.beginPath();
+  arrow_ctx.moveTo(arrowPos,0);
+  arrow_ctx.strokeStyle="purple";
+  arrow_ctx.lineWidth =3;
+  arrow_ctx.lineTo(arrowPos,timeArrow.height);
+  arrow_ctx.stroke();
+  arrowPos+=arrowDelta;
+  arrowPos=arrowPos%timeArrow.width;
 }
 function redrawSequencer(){
   //cleanRect

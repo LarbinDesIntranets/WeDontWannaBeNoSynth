@@ -1,4 +1,30 @@
 
+:root{
+  --primary-color:#F5EEDC;
+  --secondary-color:#27548A;
+  --third-color:#183B4E;
+  --fourth-color:#DDA853;
+
+
+  --primary-color:#69247C;
+  --secondary-color:#DA498D;
+  --third-color:#FAC67A;
+  --fourth-color:#F9E6CF;
+}
+
+body{
+  background-color: #F9E6CF;
+}
+h1{
+  background-color:var(--fourth-color);
+  color:var(--primary-color);
+  border: 2px solid var(--primary-color);
+  display:block;
+  width:100%;
+  height: auto;
+  text-align: center;
+  font-size:3rem;
+}
 #control-panel{
   margin-left:1rem;
   margin-bottom:1rem;
@@ -12,4 +38,16 @@
   background-color: dimgray;
   color:beige;
   border-style: none;
+}
+
+.wrapper {
+    position: relative;
+    width: 400px;
+    height: 300px;
+}
+
+.wrapper canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
 }

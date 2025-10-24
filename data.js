@@ -7,6 +7,9 @@ var beat=1;
 var volume=1;
 var currentMeseare=0;
 var intervalLecture;
+var intervalArrow;
+var arrowPos=0;
+var arrowDelta=0;
 var isMetronomeActivated=true;
 var instruments=[];
 var currentInstrument={};
@@ -31,9 +34,11 @@ for(let i=0;i<instruments.length;i++){
 const cellWidth = 50;
 const cellHeigth = 20
 var canvas = document.getElementById("myCanvas");
+var timeArrow = document.getElementById("timeArrow");
 var width = canvas.width;
 var max_height = canvas.height;
 var ctx = canvas.getContext("2d");
+var arrow_ctx = timeArrow.getContext("2d");
 var defaultLength=currentInstrument.getSampleLength();
 console.log(defaultLength);
 var ac = new AudioContext();
