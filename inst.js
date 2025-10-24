@@ -1,4 +1,4 @@
-const SequenceModification = Object.freeze({ADDED:0,REMOVED:1,NONE:2});
+const SequenceModification = Object.freeze({ADDED:0,REMOVED:1,NONE:2,MODIFIED:3});
 const NoteFrequencies= [
   A0=>1235.45,
 ];
@@ -30,7 +30,7 @@ class Synth extends Instrument{
   getSampleLength(){
     return this.length;
   }
-  sequenceToggle(iSequence,start, time){
+  sequenceToggle(iSequence,start, time,bouton){
     if(start >= this.length){
       console.log("this.length trop petit " + start+" "+this.length);
       return SequenceModification.NONE;
@@ -40,10 +40,23 @@ class Synth extends Instrument{
     for(let i=0;i<sequence.length;i++){
       console.log("check : "+sequence[i][0]+" "+sequence[i][1]+" "+start+" "+time);
       //if remove, return
+        console.log('=>'+bouton);
       if((sequence[i][0]<=start && sequence[i][0]+sequence[i][1]>start)){
         console.log("delete");
-        this.sequence[iSequence] = this.sequence[iSequence].filter(item => item !== sequence[i]) ;
-        return SequenceModification.REMOVED;
+        if(bouton == Clic.RIGHT){
+          this.sequence[iSequence] = this.sequence[iSequence].filter(item => item !== sequence[i]) ;
+          return SequenceModification.REMOVED;
+        }else{
+          if(i<(sequence.length-1) && sequence[i][0]+sequence[i][1]>=sequence[i+1][0]){
+            console.log('sibling reject');
+            return SequenceModification.NONE;
+          }else if((sequence[i][0]+sequence[i][1]+1)>this.length){
+            console.log('length reject');
+            return SequenceModification.NONE;
+          }
+            sequence[i][1] = sequence[i][1]+1;
+            return SequenceModification.MODIFIED;
+        }
       }else if((!(sequence[i][0]<start && sequence[i][0]+sequence[i][1]<=start))
         && (!(sequence[i][0]>=(start+time) && sequence[i][0]+sequence[i][1]>(start+time)))){
           //Do not fit

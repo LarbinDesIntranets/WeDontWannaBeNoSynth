@@ -1,4 +1,4 @@
-const Clic = Object.freeze({RIGHT:1,LEFT:2});
+const Clic = Object.freeze({LEFT:1,RIGHT:2});
 
 function drawCanvas(){
   canvas.height=currentInstrument.getPisteLength()*cellHeigth;
@@ -99,7 +99,6 @@ function drawColumn(iColumn, backColor, borderColor, activatedColor){
   ctx.stroke();
 }
 function getCursorPosition(canvas, event) {
-  console.log(event);
   const rect = canvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
@@ -109,19 +108,10 @@ function getCursorPosition(canvas, event) {
   //console.log(iPiste);
   if(iPiste<piste.length){
     var timing = Math.floor(x/cellWidth);
-    if(SequenceModification.NONE!=currentInstrument.sequenceToggle(iPiste,timing,Math.floor(Math.random()*2)+1)){
+    console.log(bouton);
+    if(SequenceModification.NONE!=currentInstrument.sequenceToggle(iPiste,timing,1,bouton)){
       cUpdateLine(iPiste);
     }
-    //drawCanvas();
-    /*if(piste[iPiste].has(timing)){
-      piste[iPiste].delete(timing);
-      ctx.fillStyle = '#F9E6CF';
-      ctx.fillRect((timing*cellWidth)+1,(iPiste*cellHeigth)+1, cellWidth-2,cellHeigth-2);
-    }else if(timing < currentInstrument.getSampleLength()){
-      piste[iPiste].add(timing);
-      ctx.fillStyle = "#DA498D";
-      ctx.fillRect((timing*cellWidth)+1,(iPiste*cellHeigth)+1, cellWidth-2,cellHeigth-2);
-    }*/
   }
 }
 function cUpdateLine(iPiste){

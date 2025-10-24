@@ -8,7 +8,7 @@ function play(){
   intervalArrow=setInterval(cMoveArrow,getTimeInterval());//30fps ?
   //fuck this shit
   let tmpsLine = (60/tempo)/beat;
-  arrowDelta=timeArrow.width/currentInstrument.getSampleLength();
+  arrowDelta=(timeArrow.width/currentInstrument.getSampleLength());
 }
 function pause(){
   //console.log(isPlaying);
